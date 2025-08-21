@@ -1,0 +1,43 @@
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+*.egg-info/
+*.egg
+*.log
+
+# --- Virtual Environment ---
+.env/
+venv/
+ENV/
+.venv/
+env/
+env.bak/
+venv.bak/
+
+# --- Environment Variables ---
+*.env
+
+# --- IDE / Editor ---
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# --- Test / Coverage ---
+.coverage
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+htmlcov/
+
+# --- Deployment ---
+*.pid
+*.db
+instance/
+.wercker/
