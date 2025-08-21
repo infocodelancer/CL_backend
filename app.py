@@ -10,8 +10,8 @@ def create_app() -> Flask:
     app.config["ENV"] = settings.ENV
     app.config["DEBUG"] = settings.DEBUG
 
-    # CORS for your frontend origin(s); adjust as needed
-    CORS(app, resources={r"/api/*": {"origins": "*"}})
+    # Allow CORS from anywhere (or restrict to your frontend domain)
+    CORS(app)
 
     @app.get("/api/health")
     def health():
@@ -23,16 +23,10 @@ def create_app() -> Flask:
             if request.is_json:
                 payload = request.get_json(silent=True) or {}
             else:
-                # accept form submissions
                 payload = request.form.to_dict()
 
-            # Validate with Pydantic
             customer = Customer(**payload)
-
-            # Store in MongoDB
             customer_id = insert_customer(customer.model_dump())
-
-            # Send confirmation email
             email_sent = send_confirmation_email(customer.email, customer.firstName)
 
             return jsonify({
@@ -40,12 +34,9 @@ def create_app() -> Flask:
                 "customer_id": customer_id,
                 "email_sent": email_sent
             }), 201
-
         except Exception as e:
             return jsonify({"error": str(e)}), 400
 
     return app
 
-if __name__ == "__main__":
-    app = create_app()
-    app.run(debug=settings.DEBUG)
+app = create_app()
